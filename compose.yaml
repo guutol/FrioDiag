@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: friodiag-postgres
+    environment:
+      POSTGRES_DB: friodiag
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "127.0.0.1:5433:5432"         # só acessível do meu PC
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: friodiag-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
+    ports:
+      - "127.0.0.1:5672:5672"         # protocolo AMQP (a aplicação usa)
+      - "127.0.0.1:15672:15672"       # Management UI (usa no navegador)
+volumes:
+  pgdata:
