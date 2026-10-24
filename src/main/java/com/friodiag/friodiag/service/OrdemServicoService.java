@@ -5,7 +5,11 @@ import com.friodiag.friodiag.dto.OrdemResponse;
 import com.friodiag.friodiag.entity.OrdemServico;
 import com.friodiag.friodiag.repository.OrdemServicoRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class OrdemServicoService {
@@ -20,5 +24,12 @@ public class OrdemServicoService {
         OrdemServico os = new OrdemServico(request.equipamento(), request.sintomas());
         OrdemServico salva = repository.save(os);
         return OrdemResponse.de(salva);
+    }
+
+    public OrdemResponse buscarPorId(UUID id) {
+        OrdemServico os = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Ordem de seriço não encontrada"));
+        return OrdemResponse.de(os);
     }
 }

@@ -5,10 +5,9 @@ import com.friodiag.friodiag.dto.OrdemResponse;
 import com.friodiag.friodiag.service.OrdemServicoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/ordens")
@@ -27,5 +26,10 @@ public class OrdemServicoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<OrdemResponse> buscarPorId(@PathVariable UUID id) {
+        OrdemResponse response = service.buscarPorId(id);
+        return ResponseEntity.ok(response);
+    }
 
 }
