@@ -1,6 +1,7 @@
 package com.friodiag.friodiag.controller;
 
 import com.friodiag.friodiag.dto.CriarOrdemRequest;
+import com.friodiag.friodiag.dto.ErroResponse;
 import com.friodiag.friodiag.dto.OrdemResponse;
 import com.friodiag.friodiag.service.OrdemServicoService;
 import jakarta.validation.Valid;
@@ -11,7 +12,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -44,5 +48,19 @@ public class OrdemServicoController {
                     sort = "criadoEm",
                     direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(service.listar(pageable));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErroResponse> tratarParametroInvalido(
+            MethodArgumentTypeMismatchException ex) {
+        ErroResponse resposta = new ErroResponse(
+                400,
+                "Parâmetro inválido",
+                List.of("O parâmetro '" + ex.getName()
+                + "' possui um formato inválido"),
+                OffsetDateTime.now()
+        );
+
+        return ResponseEntity.badRequest().body(resposta);
     }
 }
