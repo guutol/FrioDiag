@@ -3,6 +3,7 @@ package com.friodiag.friodiag.controller;
 import com.friodiag.friodiag.dto.CriarOrdemRequest;
 import com.friodiag.friodiag.dto.OrdemResponse;
 import com.friodiag.friodiag.service.OrdemServicoService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,7 +25,7 @@ public class OrdemServicoController {
 
     @PostMapping
     public ResponseEntity<OrdemResponse> criar(
-            @RequestBody CriarOrdemRequest request) {
+           @Valid @RequestBody CriarOrdemRequest request) {
 
         OrdemResponse response = service.criar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
