@@ -9,7 +9,7 @@ public record CriarOrdemRequest(
         String equipamento,
 
         @NotBlank(message = "Sintomas são obrigatórios")
-        @Size(min = 8, max = 2000,
+        @Size(min = 10, max = 2000,
                 message = "Sintomas devem ter entre 10 e 2000 caracteres")
         String sintomas
 ) {}
